@@ -90,7 +90,7 @@ maxlen = 125  # We will cut reviews after 125 words
 
 # Save the encodings in a file
 if LOAD_ENCODING_FROM_FILE == 0:
-	bc=BertClient(ip='165.22.174.103')
+	bc=BertClient()
 	sent1 = list(filter(lambda x: bool(x.strip()), sent1))
 	print(len(sent1))
 	vec1=bc.encode(sent1)
