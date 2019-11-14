@@ -91,16 +91,17 @@ maxlen = 125  # We will cut reviews after 125 words
 # Save the encodings in a file
 if LOAD_ENCODING_FROM_FILE == 0:
 	bc=BertClient()
-	#sent1 = list(filter(lambda x: bool(x.strip()), sent1))
-	#print(len(sent1))
-	#vec1=bc.encode(sent1)
-	#with open(encoding_data_file_quest1, "wb") as fp:
-	#	pickle.dump(vec1, fp)
-	sent2 = list(filter(lambda x: bool(x.strip()), sent2))
-	print(len(sent2))
-	vec2=bc.encode(sent2)
-	with open(encoding_data_file_quest2, "wb") as fp:
-		pickle.dump(vec2,fp)
+	sent1 = list(filter(lambda x: bool(x.strip()), sent1))
+	print(len(sent1))
+	vec1=bc.encode(sent1)
+	with open(encoding_data_file_quest1, "wb") as fp:
+		pickle.dump(vec1, fp)
+	# sent2 = list(filter(lambda x: bool(x.strip()), sent2))
+	# print(len(sent2))
+	# vec2=bc.encode(sent2)
+	# with open(encoding_data_file_quest2, "wb") as fp:
+	# 	pickle.dump(vec2,fp)
 	with open(encoding_data_file_label, "wb") as fp:
 		pickle.dump(label,fp)
+	print("Dumped")
 exit(0)

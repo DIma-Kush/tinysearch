@@ -25,6 +25,7 @@ from keras import models
 from keras import layers
 from keras import optimizers
 from keras.layers import Dropout
+from bert_serving.client import BertClient
 
 #################################################
 #Helper functions
@@ -79,15 +80,13 @@ inp1= Input(shape=(768,))
 inp2= Input(shape=(768,))
 
 x = keras.layers.concatenate([inp1, inp2],axis=-1)
-#x = Dense(1024, activation='relu')(x)
-#x = Dropout(0.5) (x)
-#x = Dense(256, activation='relu')(x)
-#x = Dropout(0.5) (x)
-x = Dense(32, activation='relu')(x)
+x = Dense(1024, activation='relu')(x)
+x = Dense(256, activation='relu')(x)
+x = Dense(64, activation='relu')(x)
 out=Dense(1,activation='sigmoid')(x)
 model = Model(inputs=[inp1,inp2], outputs=out)
 model.summary()
-model.compile(optimizer='rmsprop',
+model.compile(optimizer='adam',
               loss='binary_crossentropy',
               metrics=['acc'])
 #print(np.shape(train_vec1))
@@ -96,7 +95,7 @@ model.compile(optimizer='rmsprop',
 #exit(0)
 
 history=model.fit([train_vec1, train_vec2], train_label,
-	epochs=30,batch_size=200,
+	epochs=20,batch_size=200,
 	validation_split=0.2)
 
 #################################################
@@ -104,7 +103,7 @@ history=model.fit([train_vec1, train_vec2], train_label,
 # First model uses mean_squared_error, 256, 0.5, 64, 1
 # second model uses binary_crossentropy,256,0.5,64,1
 #with sigmoid
-model.save('third_model.h5')
+model.save('third_model_local.h5')
 #################################################
 # Plot figures
 import matplotlib.pyplot as plt
@@ -124,3 +123,17 @@ plt.title('Training and validation loss')
 plt.legend()
 plt.show()
 #################################################
+bc = BertClient(ip='165.22.174.103',port=5555,port_out=5556,check_version=False)
+
+ans = model.predict([train_vec1, train_vec2])
+print(np.count_nonzero(ans>0.5))
+print(ans)
+
+while True:
+	question1 = input("Question 1: ")
+	question2 = input("Question 2: ")
+	vec1 = bc.encode([question1])
+	vec2 = bc.encode([question2])
+
+	ans = model.predict([vec1, vec2])
+	print(ans)

@@ -14,7 +14,7 @@ from keras.models import load_model
 TRAIN_DATA_PARA2SENT="/home/manish/Downloads/MRPC_DIR/test.tsv"
 #TRAIN_LABEL_PARA2SENT="semeval-2014_task-3/SemEval-2014_Task-3/keys/training/paragraph2sentence.train.gs.tsv"
 #MODEL_FILE='/home/manish/TAMU_FALL_2019/RESEARCH/second_model_train/third_model.h5'
-MODEL_FILE='third_model.h5'
+MODEL_FILE='third_model_local.h5'
 ####################################################
 #Input
 docs_input=[
@@ -50,7 +50,7 @@ class Gyata:
         self.bc = BertClient(ip='165.22.174.103',port=5555,port_out=5556,check_version=False)
         #self.train_df = pd.read_csv(TRAIN_DATA_PARA2SENT,engine='python',sep='\t')
         # Load the nn model
-        self.model = load_model(MODEL_FILE)
+        self.model = load_model(MODEL_FILE, compile=False)
         # Encode the docs
         self.docs_vec=self.bc.encode(docs_input)
 
