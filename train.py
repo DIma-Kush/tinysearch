@@ -6,7 +6,7 @@
 import os
 data_file='quora_duplicate_questions.tsv'
 # 0 means dont load, 1 means fetch from file
-LOAD_ENCODING_FROM_FILE=1 
+LOAD_ENCODING_FROM_FILE=1
 encoding_data_file_quest1='encoding_quest1'
 encoding_data_file_quest2='encoding_quest2'
 encoding_data_file_label='quest_label'
@@ -38,21 +38,26 @@ maxlen = 125  # We will cut reviews after 125 words
 # [0.1 0.4 0.4] [0.9 0.6 0.1] 2.4
 # [0.4 0.1 0.3] [0.5 0.6 0.1] 1.0
 
-# Save the encodings in a file 
+# Save the encodings in a file
 if LOAD_ENCODING_FROM_FILE == 1:
 	#bc=BertClient(port=5555, port_out=5556)
 	#vec1=bc.encode(sent1)
 	with open(encoding_data_file_quest1, "rb") as fp:
 		vec1=pickle.load(fp)
 	#vec2=bc.encode(sent2)
-	with open(encoding_data_file_quest2, "rb") as fp:   
+	with open(encoding_data_file_quest2, "rb") as fp:
 		vec2=pickle.load(fp)
-	with open(encoding_data_file_label, "rb") as fp: 
+	with open(encoding_data_file_label, "rb") as fp:
 		label=pickle.load(fp)
 
 #label=label[:500]
 train_vec1 = np.asarray(vec1, np.float32)
 train_vec2 = np.asarray(vec2, np.float32)
+len1, _ = train_vec1.shape
+len2, _ = train_vec2.shape
+l = min(len1, len2)
+train_vec1 = train_vec1[:l, :]
+train_vec2 = train_vec2[:l, :]
 train_label = np.asarray(label,np.float32)
 print(np.shape(train_vec1))
 print(np.shape(train_vec2))
@@ -88,7 +93,7 @@ model.compile(optimizer='rmsprop',
 #print(np.shape([train_vec1,train_vec2]))
 #exit(0)
 
-history=model.fit([train_vec1, train_vec2], train_label, 
+history=model.fit([train_vec1, train_vec2], train_label,
 	epochs=30,batch_size=200,
 	validation_split=0.2)
 
@@ -96,7 +101,7 @@ history=model.fit([train_vec1, train_vec2], train_label,
 # Save model
 # First model uses mean_squared_error, 256, 0.5, 64, 1
 # second model uses binary_crossentropy,256,0.5,64,1
-#with sigmoid 
+#with sigmoid
 model.save('third_model.h5')
 #################################################
 # Plot figures
