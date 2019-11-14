@@ -6,7 +6,7 @@
 import os
 data_file='quora_duplicate_questions.tsv'
 # 0 means dont load, 1 means fetch from file
-LOAD_ENCODING_FROM_FILE=0 
+LOAD_ENCODING_FROM_FILE=0
 encoding_data_file_quest1='encoding_quest1'
 encoding_data_file_quest2='encoding_quest2'
 encoding_data_file_label='label'
@@ -28,7 +28,7 @@ import pickle
 #################################################
 #Helper functions
 def sanitize_question(text):
-	''' Pre process and convert texts to a list of words 
+	''' Pre process and convert texts to a list of words
 	'''
 	text = str(text)
 	text = text.lower()
@@ -67,7 +67,7 @@ def sanitize_question(text):
 
 #################################################
 # Read the input file
-data_df=pd.read_csv(data_file,sep='\t',nrows=100000)
+data_df=pd.read_csv(data_file,sep='\t',nrows=20000)
 print(data_df.shape)
 
 sent1=[]
@@ -88,16 +88,19 @@ maxlen = 125  # We will cut reviews after 125 words
 # [0.1 0.4 0.4] [0.9 0.6 0.1] 2.4
 # [0.4 0.1 0.3] [0.5 0.6 0.1] 1.0
 
-# Save the encodings in a file 
+# Save the encodings in a file
 if LOAD_ENCODING_FROM_FILE == 0:
-	bc=BertClient(port=5555, port_out=5556)
+	bc=BertClient(ip='165.22.174.103')
+	sent1 = list(filter(lambda x: bool(x.strip()), sent1))
+	print(len(sent1))
 	vec1=bc.encode(sent1)
 	with open(encoding_data_file_quest1, "wb") as fp:
 		pickle.dump(vec1, fp)
+	sent2 = list(filter(lambda x: bool(x.strip()), sent2))
+	print(len(sent2))
 	vec2=bc.encode(sent2)
-	with open(encoding_data_file_quest2, "wb") as fp:   
+	with open(encoding_data_file_quest2, "wb") as fp:
 		pickle.dump(vec2,fp)
-	with open(encoding_data_file_label, "wb") as fp: 
+	with open(encoding_data_file_label, "wb") as fp:
 		pickle.dump(label,fp)
 exit(0)
-

@@ -16,7 +16,7 @@ TRAIN_DATA_PARA2SENT="/home/manish/Downloads/MRPC_DIR/test.tsv"
 #MODEL_FILE='/home/manish/TAMU_FALL_2019/RESEARCH/second_model_train/third_model.h5'
 MODEL_FILE='/home/manish/TAMU_FALL_2019/RESEARCH/second_model_train/second_model.h5'
 ####################################################
-#Input 
+#Input
 docs_input=[
 "Naftali (Tali) \n Tishby Physicist, professor of computer science and computational neuroscientist. The Ruth and Stan Flinkman professor of Brain Research \n I work at the interfaces between computer science, physics, and biology which provide some of the most challenging problems in today’s science and technology. We focus on organizing computational principles that govern information processing in biology, at all levels. To this end, we employ and develop methods that stem from statistical physics, information theory and computational learning theory, to analyze biological data and develop biologically inspired algorithms that can account for the observed performance of biological systems. We hope to find simple yet powerful computational mechanisms that may characterize evolved and adaptive systems, from the molecular level to the whole computational brain and interacting populations.",
 "Jurgen Schmidhuber's home page \n Since age 15 or so, the main goal of professor Jürgen Schmidhuber has been to build a self-improving Artificial Intelligence (AI) smarter than himself, then retire. His lab's Deep Learning Neural Networks (since 1991) such as Long Short-Term Memory (LSTM) have transformed machine learning and AI, and are now (2017) available to billions of users through the world's most valuable public companies. He also generalized algorithmic information theory and the many-worlds theory of physics, and introduced the concept of Low-Complexity Art, the information age's extreme form of minimal art. He is recipient of numerous awards, and Chief Scientist of the company NNAISENSE, which aims at building the first practical general purpose AI. He is also advising various governments on AI strategies. Teaching Master's in Artifical Intelligence (Fall 2019)",
@@ -46,8 +46,8 @@ class Gyata:
         ####################
         # Initializations
         #self.bc = BertClient(port=5555,port_out=5556,check_version=False)
-        # Make socket 
-        self.bc = BertClient(ip='128.194.142.14',port=5555,port_out=5556,check_version=False)
+        # Make socket
+        self.bc = BertClient(ip='165.22.174.103',port=5555,port_out=5556,check_version=False)
         #self.train_df = pd.read_csv(TRAIN_DATA_PARA2SENT,engine='python',sep='\t')
         # Load the nn model
         self.model = load_model(MODEL_FILE)
@@ -62,7 +62,7 @@ class Gyata:
             self.text_html.insert(END,"\n")
             self.text_html.insert(END,docs_input[i])
             self.text_html.insert(END,"\n\n\n\n")
-            
+
         ####################
         self.valid_url = None
         self.query_response = StringVar()
@@ -70,15 +70,15 @@ class Gyata:
 
         self.message_url = "Enter the website link"
         self.label_text_url = StringVar()
-        self.label_text_url.set(self.message_url) 
+        self.label_text_url.set(self.message_url)
         self.label_url = Label(master,textvariable=self.label_text_url)
 
         vcmd = master.register(self.validate) # we have to wrap the command
         self.url_entry=Entry(master,validate="key",validatecommand=(vcmd,'%P'))
 
-        #self.url_entry = self.url_input_box.get("1.0","end-1c")       
+        #self.url_entry = self.url_input_box.get("1.0","end-1c")
 
-        
+
         self.message = "Enter the string you want to find "
         self.label_text = StringVar()
         self.label_text.set(self.message)
@@ -92,7 +92,7 @@ class Gyata:
         self.train_data_entry = Entry(master)
 
         # Scroll Area to display results
-         
+
         #self.text_data = tkst.ScrolledText(master)
         self.data_col1= StringVar()
         self.data_col2= StringVar()
@@ -108,7 +108,7 @@ class Gyata:
         #self.train_data_button = Button(master, text="See Training Data", command=self.read_data)
 
         self.label_query_response = Label(master,textvariable=self.query_response,wraplength=600,justify="left");
- 
+
         # organization on screen
 
         #self.label_url.grid(row=0, column=0, sticky=W)
@@ -135,29 +135,29 @@ class Gyata:
         if not new_text: # the field is being cleared
             self.valid_url = None
             return True
-        
+
         self.valid_url = new_text
         return True
-       
+
     def tokenize(self,parsedhtml):
-        
+
         # remove () by replacing them with space
         parsedhtml = parsedhtml.replace('(',' ').replace(')',' ').replace(':',' ').replace(',',' ')
         # remove :: and [] and /  and -- and  . by replacing them with space
         parsedhtml = parsedhtml.replace('[',' ').replace(']',' ').replace('::',' ').replace('/',' ').replace('--',' ').replace('.',' ')
         # split on space and save in tokens_list
-        tokens_list=parsedhtml.split() 
-        
-        return tokens_list 
+        tokens_list=parsedhtml.split()
+
+        return tokens_list
 
     def find_query(self):
-       
-       
+
+
         query=self.bc.encode([self.query_entry.get()])[0]
-        queryT = np.asarray(query,np.float32) 
+        queryT = np.asarray(query,np.float32)
         queryT = queryT.reshape(1,768)
         #print(np.shape(queryT))
-        # we are going to calculate the relevance score for each 
+        # we are going to calculate the relevance score for each
         # doc and query pair and store in score
         '''score = []
         print(np.shape(self.docs_vec))
@@ -176,20 +176,20 @@ class Gyata:
         #score = []
         #for i in range(len(self.doc_vec)):
         #score=cosine_similarity(query,self.doc_vec)
-        
+
         topk_idx = np.argsort(score)[::-1][:5]
         l=[]
         for idx in topk_idx:
             l.append('%s \n\n\n' % (docs_input[idx]))
-	    
+
             #rint('> %s\t%s' % (score[idx], self.docs_list[idx]))
 
-        
+
         self.query_response.set(l)
-        
+
         self.find_button.configure(state=DISABLED)
         self.search_again_button.configure(state=NORMAL)
-    
+
     def reset(self):
         self.query_entry.delete(0, END)
         self.url_entry.delete(0, END)
@@ -197,7 +197,7 @@ class Gyata:
 
         self.message = "Enter the website link"
         self.label_text_url.set(self.message)
-       
+
         self.message= "Enter the string you want to find "
         self.label_text.set(self.message)
 
@@ -216,7 +216,7 @@ class Gyata:
         self.data_col1.set(self.train_data[row,0])
         self.data_col2.set(self.train_data[row,1])
         self.data_col3.set(self.train_label[row,0])
-'''        
+'''
 root = Tk()
 root.style = Style()
 root.style.theme_use("clam")
