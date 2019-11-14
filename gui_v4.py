@@ -14,7 +14,7 @@ from keras.models import load_model
 TRAIN_DATA_PARA2SENT="/home/manish/Downloads/MRPC_DIR/test.tsv"
 #TRAIN_LABEL_PARA2SENT="semeval-2014_task-3/SemEval-2014_Task-3/keys/training/paragraph2sentence.train.gs.tsv"
 #MODEL_FILE='/home/manish/TAMU_FALL_2019/RESEARCH/second_model_train/third_model.h5'
-MODEL_FILE='/home/manish/TAMU_FALL_2019/RESEARCH/second_model_train/second_model.h5'
+MODEL_FILE='third_model.h5'
 ####################################################
 #Input
 docs_input=[

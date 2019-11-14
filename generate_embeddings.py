@@ -67,7 +67,7 @@ def sanitize_question(text):
 
 #################################################
 # Read the input file
-data_df=pd.read_csv(data_file,sep='\t',nrows=20000)
+data_df=pd.read_csv(data_file,sep='\t',nrows=100000)
 print(data_df.shape)
 
 sent1=[]
