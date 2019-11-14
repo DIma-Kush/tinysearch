@@ -55,10 +55,12 @@ train_vec1 = np.asarray(vec1, np.float32)
 train_vec2 = np.asarray(vec2, np.float32)
 len1, _ = train_vec1.shape
 len2, _ = train_vec2.shape
+train_label = np.asarray(label,np.float32)
+
 l = min(len1, len2)
 train_vec1 = train_vec1[:l, :]
 train_vec2 = train_vec2[:l, :]
-train_label = np.asarray(label,np.float32)
+train_label = train_label[:l]
 print(np.shape(train_vec1))
 print(np.shape(train_vec2))
 print(np.shape(train_label))
