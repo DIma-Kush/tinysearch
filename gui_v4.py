@@ -47,7 +47,7 @@ class Gyata:
         # Initializations
         #self.bc = BertClient(port=5555,port_out=5556,check_version=False)
         # Make socket
-        self.bc = BertClient(ip='165.22.174.103',port=5555,port_out=5556,check_version=False)
+        self.bc = BertClient(port=5555,port_out=5556,check_version=False)
         #self.train_df = pd.read_csv(TRAIN_DATA_PARA2SENT,engine='python',sep='\t')
         # Load the nn model
         self.model = load_model(MODEL_FILE, compile=False)
@@ -159,19 +159,27 @@ class Gyata:
         #print(np.shape(queryT))
         # we are going to calculate the relevance score for each
         # doc and query pair and store in score
-        '''score = []
+        score = []
         print(np.shape(self.docs_vec))
         for doc in self.docs_vec:
             docT = np.asarray(doc,np.float32)
             docT = docT.reshape(1,768)
             #print(queryT)
             #print(docT)
-            #print(np.shape([queryT,docT]))
+            # print(np.shape([queryT,docT]))
+            (np.shape([queryT,docT]))
+            # ------------ DNN------------------
             score.append( self.model.predict([queryT,docT]).tolist()[0][0] )
+        print("SCORE: ")
         print(score)
-        '''
-        score = np.sum(query * self.docs_vec, axis=1) / np.linalg.norm(self.docs_vec, axis=1)
-        score /= np.linalg.norm(query)
+
+        #------------ CONCATENATION------------------
+        #score = np.sum(query * self.docs_vec, axis=1) / np.linalg.norm(self.docs_vec, axis=1)
+        #score /= np.linalg.norm(query)
+       #print(score)
+
+
+        #------------  COSINE SIMILARITY ------------------
         #score = np.sum(query * self.doc_vec, axis=1)
         #score = []
         #for i in range(len(self.doc_vec)):

@@ -10,7 +10,5 @@ __pycache__/
 # ignore DNN directory
  model/
 
-# ignore generated embeddings
-encoding_quest1
-encoding_quest2
-label
+# ignore generated train model
+third_model_local.h5

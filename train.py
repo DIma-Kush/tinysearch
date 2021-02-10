@@ -123,7 +123,7 @@ plt.title('Training and validation loss')
 plt.legend()
 plt.show()
 #################################################
-bc = BertClient(ip='165.22.174.103',port=5555,port_out=5556,check_version=False)
+bc = BertClient(port=5555,port_out=5556,check_version=False)
 
 ans = model.predict([train_vec1, train_vec2])
 print(np.count_nonzero(ans>0.5))
