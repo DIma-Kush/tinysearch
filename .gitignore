@@ -1,0 +1,16 @@
+ # Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+.idea
+
+# ignore model directory
+ uncased_L-12_H-768_A-12/
+
+# ignore DNN directory
+ model/
+
+# ignore generated embeddings
+encoding_quest1
+encoding_quest2
+label
